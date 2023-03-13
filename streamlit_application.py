@@ -39,7 +39,7 @@ transforms = A.Compose(
 
 st.header("Image Inpainting Project Demo Page")
 """
-This is a demo page for the Image Inpainting Project.
+This is a demo page for an image inpainting project. \n
 Repository: https://github.com/HectorAuvinen/Image-Inpainting-Project
 """
 #st.image("./recoursces/grid_specifications.png")

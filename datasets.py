@@ -112,8 +112,7 @@ class ImageDataset(Dataset):
 
         ######################
         target_image, input_array, known_array, target_array = ex4(image, offset, spacing)
-        #print(TF.to_tensor(input_array).shape)
-        #print(TF.to_tensor(known_array[0:1,:,:]).shape)
+        
         # stack the input array and known array (to feed more essential information to the model)
         return_array = torch.cat((TF.to_tensor(input_array), TF.to_tensor(known_array[0:1,:,:])), dim=1)
         return_array = torch.transpose(return_array,0,1).type(torch.FloatTensor)
