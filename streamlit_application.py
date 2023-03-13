@@ -26,11 +26,6 @@ def load_image(image_file):
     return image
 
 
-def rmsdiff(im1, im2):
-    """Calculates the root mean square error (RSME) between two images"""
-    return np.sqrt(((im1 - im2) ** 2).mean())
-
-
 transforms = A.Compose(
     [
         A.Resize(
@@ -44,29 +39,29 @@ transforms = A.Compose(
 
 st.header("Image Inpainting Project Demo Page")
 """
-Text
-Code: 
+This is a demo page for the Image Inpainting Project.
+Repository: https://github.com/HectorAuvinen/Image-Inpainting-Project
 """
 #st.image("./recoursces/grid_specifications.png")
 
 
 
 OFFSET = st.slider(
-    "↕️ Offset ↔️", MIN_OFFSET, MAX_OFFSET, (0, 1)
+    "Offset", MIN_OFFSET, MAX_OFFSET, (0, 1)
 )  # offset in the N-direction
 SPACING = st.slider(
-    "↕️ Spacing ️↔️", MIN_SPACING, MAX_SPACING, (2, 3)
+    "Spacing ", MIN_SPACING, MAX_SPACING, (2, 3)
 )  # spacing in the M-direction
 
 clicked_random_OS = st.button(
-    "Random Offset and Spacing 🔀"
+    "Random Offset and Spacing"
 )  # random offset and spacing
 
 image_file = st.file_uploader(
-    "Upload Images 📸", type=["png", "jpg", "jpeg"]
+    "Upload Images", type=["png", "jpg", "jpeg"]
 )  # upload image
 
-clicked_random_image = st.button("Random Image 🔀📷")
+clicked_random_image = st.button("Random Image")
 
 if clicked_random_image:
     image_file = Image.open(
@@ -125,7 +120,7 @@ if image_file is not None:
         )  # show the image
 
     with col2:
-        st.subheader("Target Image ")
+        st.subheader("Target Image (Original Size) ")
         st.image(
             np.transpose(target.astype("uint8"), (1, 2, 0)), width=200
         )  # show the target image
@@ -153,4 +148,3 @@ if image_file is not None:
         st.image(
             np.transpose(output.astype("uint8"), (1, 2, 0)), width=200
         )  # show the output image
-    st.write("Root Mean Square Error ", rmsdiff(target, output))  # show the error

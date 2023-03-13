@@ -19,11 +19,7 @@ import matplotlib.pyplot as plt
 import torchvision
 from datetime import datetime
 
-#datadir = "C:/Users/hecto/Documents/ai/python/python2/assignment2/exercise5/training/000"
-#datadir = "C:/Users/hecto/Documents/ai/python/python2/assignment2/exercise5/pseudo_train"
-#Define the path to the training,validation and test data. Data will be split up later.
-#datadir = "C:/Users/hecto/Documents/ai/python/python2/assignment2/exercise5/training"
-datadir = "C:/Users/Hector Auvinen/Documents/image_inpainting/training"
+datadir = r"./training"
 
 def evaluate_model(model: torch.nn.Module, dataloader: torch.utils.data.DataLoader, loss_fn, device: torch.device):
     """Function for evaluation of a model `model` on the data in `dataloader` on device `device`,
@@ -67,14 +63,8 @@ def main(results_path, network_config: dict, learningrate: int = 1e-3, weight_de
     plotpath = os.path.join(results_path, "plots")
     os.makedirs(plotpath, exist_ok=True)
     
-    #
-    #image_dataset = ImageDataset(datadir)
-    #trainloader = DataLoader(image_dataset, batch_size=1,shuffle=True)
-    ###############################################################################
-    #
     path_dataset = PathDataset(datadir) #The "first" class (returns the path(s) and index)
-    #trainset = ImageDataset(path_dataset)
-    #trainloader = DataLoader(trainset, batch_size=1)
+
     # Split dataset into training, validation and test set
 
     trainingset = torch.utils.data.Subset(
@@ -135,11 +125,10 @@ def main(results_path, network_config: dict, learningrate: int = 1e-3, weight_de
     while update < n_updates:
         for data in trainloader:
             # Get next samples
-            #inputs, targets, ids = data
             inputs, targets, ids = data
-            #print(inputs.shape)
-            #print(targets.shape)
+
             inputs = inputs.to(device)
+
             targets = targets.to(device)
             
             # Reset gradients

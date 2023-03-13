@@ -1,20 +1,18 @@
-# Example ML project
-This project is an example ML project and contains a simple CNN that is trained to rotate an input image.
-The input images used are CIFAR10 images, which have been converted to grayscale and are rotated to obtain the targets.
+# Image Inpainting Project
+This project uses a simple CNN trained to predict a full image from an image that is obscured with a black grid.
 
-In this first section, you would put general information on the project, references and an author list (if applicable).
 
 ### Example usage
-It helps, especially for people new to ML, to include various example usage scenarios and an installation guide of your project (if applicable).
-
-In our case, the simple usage is:
+To train a new model run
 ```
 python main.py working_config.json
 ```
-
+To run the Streamlit application run
+```
+streamlit run streamlit_application.py
+```
 ### Structure
-Having a tree with the files and folders is nice to get an overview.
-However, this is sometimes tedious to maintain and omitted.
+The folder structure of the project
 ```
 example_project
 |- architectures.py
@@ -24,12 +22,19 @@ example_project
 |- main.py
 |    Main file. In this case also includes training and evaluation routines.
 |- README.md
-|    A readme file containing info on project, example usage, authors, publication references, and dependencies.
+|    A readme file containing info on project, example usage and dependencies.
 |- utils.py
-|    Utility functions and classes. In this case contains a plotting function.
+|    Plotting functions for the training procedure.
+|- working_config.json
+|     Configuration file for specifying the network architecture and training parameters. Can also be done via command line arguments to main.py.
 |- working_config.json
 |     An example configuration file. Can also be done via command line arguments to main.py.
+|- streamlit_application.py
+|     Streamlit script. Used for project (inference) demonstration.
 ```
 
 ### Dependencies
-Dependencies are usually given as a list of packages + version numbers or as conda environments.
+To install the project environmen, run
+```
+conda env create -f environemnt.yml
+```

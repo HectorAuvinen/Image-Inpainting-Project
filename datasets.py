@@ -16,13 +16,14 @@ import matplotlib.pyplot as plt
 import torchvision.transforms.functional as TF
 import pickle
 
-#Set the values for min and max of offset and spacing as specified in the exercise description
+
+#Set the values for min and max of offset and spacing
 MIN_OFFSET = 0
 MAX_OFFSET = 8
 MIN_SPACING = 2
 MAX_SPACING = 6
 
-#This function is used to resize the images to 100 x 100 (used instead of function "crop") note: misleading name, not cropping but resizing
+#This function is used to resize the images to 100 x 100
 def resize(thing,im_shape):
 
     resize_transforms = transforms.Compose([
@@ -108,21 +109,7 @@ class ImageDataset(Dataset):
         #define offset and spacing so that we can get input,known and target array with ex4
         offset = (np.random.randint(MIN_OFFSET,MAX_OFFSET),np.random.randint(MIN_OFFSET,MAX_OFFSET))
         spacing = (np.random.randint(MIN_SPACING,MAX_SPACING),np.random.randint(MIN_SPACING,MAX_SPACING))
-        '''
-        target_image,input_array,known_array,target_array = ex4(image,offset,spacing)
 
-        #stack the input array and known array (to feed more essential information to the model)
-        return_array = torch.concat((TF.to_tensor(input_array),TF.to_tensor(known_array[0:1,:,:])),1)
-        #undo transpose (on stacked array) from ex4 & convert to torch tensor
-
-        return_array = np.array((return_array))
-        return_array = return_array.transpose(1, 2, 0)
-        return_array = torch.from_numpy(return_array).type(torch.FloatTensor)
-        
-        #undo transpose (on full image) from ex4 & convert to torch tensor
-        full_image = np.transpose(full_image, (2, 0, 1))
-        full_image = torch.from_numpy(full_image).type(torch.FloatTensor)
-        '''
         ######################
         target_image, input_array, known_array, target_array = ex4(image, offset, spacing)
         #print(TF.to_tensor(input_array).shape)
@@ -137,33 +124,3 @@ class ImageDataset(Dataset):
         #return_array = return_array.type(torch.FloatTensor)
         #full_image = full_image.type(torch.FloatTensor)
         return return_array, full_image, index
-
-
-
-#CURRENTLY THIS CLASS IS NOT USED - LEFT HERE FOR "SAFETY" ANYWAY
-class PickleDataset(Dataset):
-    def __init__(self,path):
-        with open(path, 'rb') as f:
-            self.data = pickle.load(f)
-        self.input_arrays = self.data['input_arrays']
-        self.known_arrays = self.data['known_arrays']
-    def __len__(self):
-        return len(self.data)
-
-    def __getitem__(self, index):
-        ##########################
-        input_array = self.input_arrays[index]
-        known_array = self.known_arrays[index]
-
-        input_array = input_array / 255
-
-        return_array = torch.concat((TF.to_tensor(input_array),TF.to_tensor(known_array[0:1,:,:])),1)
-        #print("AFTER CONCAT",return_array.shape)
-        return_array = np.array((return_array))
-        #print("AFTER TO NP ARRAY",return_array.shape)
-        return_array = return_array.transpose(1, 2, 0)
-        #print("AFTER TRANSPOSE",return_array.shape)
-        return_array = torch.from_numpy(return_array).type(torch.FloatTensor)
-        #print("AFTER TORCH FROM NUMPY",return_array.shape)
-
-        return return_array,known_array,index
