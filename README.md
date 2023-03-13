@@ -14,7 +14,7 @@ streamlit run streamlit_application.py
 ### Structure
 The folder structure of the project
 ```
-example_project
+Image-Inpainting-Project
 |- architectures.py
 |    Classes and functions for network architectures
 |- datasets.py
