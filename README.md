@@ -27,8 +27,6 @@ Image-Inpainting-Project
 |    Plotting functions for the training procedure.
 |- working_config.json
 |     Configuration file for specifying the network architecture and training parameters. Can also be done via command line arguments to main.py.
-|- working_config.json
-|     An example configuration file. Can also be done via command line arguments to main.py.
 |- streamlit_application.py
 |     Streamlit script. Used for project (inference) demonstration.
 ```
