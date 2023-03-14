@@ -19,7 +19,8 @@ import matplotlib.pyplot as plt
 import torchvision
 from datetime import datetime
 
-datadir = r"./training"
+#datadir = r"./training"
+datadir = "C:/Users/hecto/Documents/ai/python/python2/assignment2/exercise5/training"
 
 def evaluate_model(model: torch.nn.Module, dataloader: torch.utils.data.DataLoader, loss_fn, device: torch.device):
     """Function for evaluation of a model `model` on the data in `dataloader` on device `device`,
@@ -37,10 +38,6 @@ def evaluate_model(model: torch.nn.Module, dataloader: torch.utils.data.DataLoad
             
             # Get outputs of the specified model
             outputs = model(inputs)
-            
-            # Here we could clamp the outputs to the minimum and maximum values of inputs for better performance
-            #outputs = outputs * 255
-
 
             # Add the current loss, which is the mean loss over all minibatch samples
             # (unless explicitly otherwise specified when creating the loss function!)
@@ -63,10 +60,10 @@ def main(results_path, network_config: dict, learningrate: int = 1e-3, weight_de
     plotpath = os.path.join(results_path, "plots")
     os.makedirs(plotpath, exist_ok=True)
     
-    path_dataset = PathDataset(datadir) #The "first" class (returns the path(s) and index)
+    # The "first" class (returns the path(s) and index)
+    path_dataset = PathDataset(datadir)
 
     # Split dataset into training, validation and test set
-
     trainingset = torch.utils.data.Subset(
         path_dataset,
         indices=np.arange(int(len(path_dataset) * (3 / 5))))
@@ -116,17 +113,12 @@ def main(results_path, network_config: dict, learningrate: int = 1e-3, weight_de
     # Save initial model as "best" model (will be overwritten later)
     saved_model_file = os.path.join(results_path, "best_model.pt")
     torch.save(net, saved_model_file)
-
-    #now = datetime.now()
-    #saved_model_file = os.path.join(results_path,str(now.strftime("%m_%d_%Y_%H_%M_%S")) + "_model.pt")
-    #torch.save(net, saved_model_file)
     
     # Train until n_updates updates have been reached
     while update < n_updates:
         for data in trainloader:
             # Get next samples
             inputs, targets, ids = data
-
             inputs = inputs.to(device)
 
             targets = targets.to(device)

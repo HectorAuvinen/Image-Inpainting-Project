@@ -3,7 +3,7 @@
   "device": "cuda:0",
   "learningrate": 1e-3,
   "weight_decay": 1e-5,
-  "n_updates": 1000,
+  "n_updates": 25000,
   "network_config": {
     "n_hidden_layers": 8,
     "n_in_channels": 4,

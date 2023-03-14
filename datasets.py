@@ -54,6 +54,7 @@ def ex4(image_array: np.ndarray, offset: tuple, spacing: tuple):
     
     return (target_image,image_array, known_array, target_array)
 
+#Given an image, offset and spacing return image array, known array and target array (Duplicate needed for plotting)
 def grid(image_array: np.ndarray, offset: tuple, spacing: tuple):
     target = image_array.copy()  # copy to avoid modifying the original image
     known_array = np.zeros_like(image_array)  # array to keep track of known pixels
@@ -69,8 +70,7 @@ def grid(image_array: np.ndarray, offset: tuple, spacing: tuple):
         target_array,
     )  # return target, image, known, target_array
 
-
-#This class is used to get the data paths & indices (created so that the data can be split into train,val,test sets)
+#Get the data paths & indices (enables split into train,val,test sets)
 class PathDataset(Dataset):
     def __init__(self,image_dir):
         #Get all the image paths
@@ -84,9 +84,10 @@ class PathDataset(Dataset):
         image_path = self.data[index]
 
         #return image path,index
+
         return image_path,index
 
-#This class is used to read an image, apply crop, apply ex4, and return the (stacked) input array, full image and index for dataloader
+#read an image, apply resize, apply grid, and return the (stacked) input array, full image and index for dataloader
 class ImageDataset(Dataset):
     def __init__(self, dataset: Dataset):
         #define dataset
@@ -102,7 +103,6 @@ class ImageDataset(Dataset):
         image_data = resize(image_data,100)
         #store normalized full image
         full_image = image_data / 255
-
         #store normalized image
         image = image_data / 255
 
@@ -110,16 +110,13 @@ class ImageDataset(Dataset):
         offset = (np.random.randint(MIN_OFFSET,MAX_OFFSET),np.random.randint(MIN_OFFSET,MAX_OFFSET))
         spacing = (np.random.randint(MIN_SPACING,MAX_SPACING),np.random.randint(MIN_SPACING,MAX_SPACING))
 
-        ######################
         target_image, input_array, known_array, target_array = ex4(image, offset, spacing)
-        
+
         # stack the input array and known array (to feed more essential information to the model)
         return_array = torch.cat((TF.to_tensor(input_array), TF.to_tensor(known_array[0:1,:,:])), dim=1)
         return_array = torch.transpose(return_array,0,1).type(torch.FloatTensor)
 
         # undo transpose (on full image) from ex4 & convert to torch tensor
         full_image = torch.from_numpy(full_image.transpose(2, 1, 0)).type(torch.FloatTensor)
-        ######################
-        #return_array = return_array.type(torch.FloatTensor)
-        #full_image = full_image.type(torch.FloatTensor)
+
         return return_array, full_image, index

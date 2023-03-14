@@ -45,7 +45,6 @@ Repository: https://github.com/HectorAuvinen/Image-Inpainting-Project
 #st.image("./recoursces/grid_specifications.png")
 
 
-
 OFFSET = st.slider(
     "Offset", MIN_OFFSET, MAX_OFFSET, (0, 1)
 )  # offset in the N-direction
@@ -57,9 +56,22 @@ clicked_random_OS = st.button(
     "Random Offset and Spacing"
 )  # random offset and spacing
 
+model = st.selectbox(
+    'Which model architecture would you like to use?',
+    ('5 Hidden Layers', ' 6 Hidden Layers'))
+st.write('You selected:', model)
+
+model_path = r"./results/models/6_hidden/best_model.pt"
+
+if model == '5 Hidden Layers':
+    model_path = r"./results/models/5_hidden/best_model.pt"
+elif model == '6 Hidden Layers':
+    model_path = r"./results/models/6_hidden/best_model.pt"
+
 image_file = st.file_uploader(
     "Upload Images", type=["png", "jpg", "jpeg"]
 )  # upload image
+
 
 clicked_random_image = st.button("Random Image")
 
@@ -71,21 +83,6 @@ if clicked_random_image:
     )
     image_array = np.asarray(image_file, dtype=np.float32)
 
-model = st.selectbox(
-    'Which model architecture would you like to use?',
-    ('5 Hidden Layers', ' 6 Hidden Layers', '7 Hidden Layers','8 Hidden Layers'))
-st.write('You selected:', model)
-
-model_path = r"./results/models/6_hidden/best_model.pt"
-
-if model == '5 Hidden Layers':
-    model_path = r"./results/models/5_hidden/best_model.pt"
-elif model == '6 Hidden Layers':
-    model_path = r"./results/models/6_hidden/best_model.pt"
-elif model == '7 Hidden Layers':
-    model_path = r"./results/models/7_hidden/best_model.pt"
-elif model == '8 Hidden Layers':
-    model_path = r"./results/models/8_hidden/best_model.pt"
 
 if image_file is not None:
     if not clicked_random_image:
@@ -141,10 +138,10 @@ if image_file is not None:
         with torch.no_grad():  # do not compute gradients
             output = model(full_image.to(device))  # predict the image
         output = output.detach().cpu().numpy()  # move the output to the CPU
-    st.success("Done! 🪄")  # show the success message
+    st.success("Done!")  # show the success message
 
     with col3:
-        st.subheader("Output Image🪄")
+        st.subheader("Output Image")
         st.image(
             np.transpose(output.astype("uint8"), (1, 2, 0)), width=200
         )  # show the output image
